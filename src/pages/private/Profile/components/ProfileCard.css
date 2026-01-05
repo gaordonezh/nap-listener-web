@@ -1,0 +1,18 @@
+#btnProfile .Mui-selected {
+  background-color: #f6f7fb;
+}
+#btnProfile .Mui-selected span,
+#btnProfile .Mui-selected svg {
+  color: #665af5 !important;
+}
+
+#btnProfile .Mui-selected::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background-color: #665af5;
+  transition: all 0.3s ease-in-out;
+}

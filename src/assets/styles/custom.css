@@ -1,0 +1,102 @@
+/* CUSTOM NOTIFICATION */
+
+.ant-notification-notice-with-icon svg {
+  fill: #fff !important;
+}
+.ant-notification-notice-success {
+  background-color: #52c41a;
+}
+.ant-notification-notice-info {
+  background-color: #1890ff;
+}
+.ant-notification-notice-error {
+  background-color: #ff4d4f;
+}
+.ant-notification-notice-warning {
+  background-color: #faad15;
+}
+.ant-notification-notice-success,
+.ant-notification-notice-info,
+.ant-notification-notice-error,
+.ant-notification-notice-warning {
+  border-radius: 20px;
+}
+.ant-notification-notice-message {
+  font-size: 16px;
+  color: #fff;
+  font-weight: 600;
+}
+.ant-notification-notice-description {
+  color: #eee;
+}
+
+/* TO PRINT DIAGNOSIS */
+.tablePrint tr td {
+  padding: 0;
+  font-size: 0.7rem;
+}
+
+.ant-select-selector {
+  border-radius: 8px !important;
+  font-family: 'Public Sans', sans-serif !important;
+  color: #637391 !important;
+}
+
+/* ANIMATION */
+.shake-sunat {
+  animation: bellshake 1s infinite;
+}
+
+@keyframes bellshake {
+  0% {
+    transform: rotate(0);
+  }
+  15% {
+    transform: rotate(5deg);
+  }
+  30% {
+    transform: rotate(-5deg);
+  }
+  45% {
+    transform: rotate(4deg);
+  }
+  60% {
+    transform: rotate(-4deg);
+  }
+  75% {
+    transform: rotate(2deg);
+  }
+  85% {
+    transform: rotate(-2deg);
+  }
+  92% {
+    transform: rotate(1deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+
+/* CUSTOM HOVER FAB (MUI) */
+.fab-customHover:hover {
+  transition: background 0.3s ease-in-out;
+  background: #fff !important;
+}
+
+.ant-select-focused .ant-select-selector,
+.ant-select-selector:focus,
+.ant-select-selector:active,
+.ant-select-open .ant-select-selector {
+  border-color: #d9d9d9 !important;
+  box-shadow: none !important;
+}
+
+.MuiTooltip-tooltip {
+  background-color: #5547f7;
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: normal;
+  box-shadow: 7px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-radius: 10px !important;
+}
