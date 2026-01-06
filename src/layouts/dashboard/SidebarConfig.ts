@@ -10,8 +10,8 @@ const sidebarConfig = [
     roles: Object.values(UserRolEnum),
   },
   {
-    title: 'Proyectos',
-    path: '/dashboard/proyectos',
+    title: 'Clientes',
+    path: '/dashboard/clients',
     icon: Checklist,
     roles: Object.values(UserRolEnum),
   },

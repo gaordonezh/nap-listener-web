@@ -13,7 +13,7 @@ const Home = Loadable(lazy(() => import('pages/public/Home')));
 const DashboardLayout = Loadable(lazy(() => import('layouts/dashboard')));
 const Dashboard = Loadable(lazy(() => import('pages/private/Dashboard')));
 const Profile = Loadable(lazy(() => import('pages/private/Profile')));
-const Projects = Loadable(lazy(() => import('pages/private/Projects')));
+const Clients = Loadable(lazy(() => import('pages/private/Clients')));
 
 const routes = [
   {
@@ -34,8 +34,8 @@ const routes = [
         roles: Object.values(UserRolEnum),
       },
       {
-        path: 'proyectos',
-        element: Projects,
+        path: 'clients',
+        element: Clients,
         roles: Object.values(UserRolEnum),
       },
       {

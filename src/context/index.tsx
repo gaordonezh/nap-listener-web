@@ -35,8 +35,6 @@ const AppContextProvider = ({ children }: PropsWithChildren) => {
     try {
       setLoading(true);
       const res = await validateUser();
-      // console.log('res:', res);
-      // setCompany(res.company);
       setUser(res);
     } catch (error) {
       navigate('/login');

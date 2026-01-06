@@ -49,7 +49,7 @@ export default function Login() {
 
       setUser(res);
 
-      navigate('/dashboard');
+      window.location.href = '/dashboard';
     } catch (error: any) {
       notification.warning({
         message: error.message || 'Sus credenciales no concuerdan con nuestros registros',

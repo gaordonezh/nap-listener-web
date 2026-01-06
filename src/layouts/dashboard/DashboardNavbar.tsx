@@ -44,7 +44,7 @@ export default function DashboardNavbar() {
           </Box>
 
           <Box width={500} display={{ lg: 'block', xs: 'none' }}>
-            SELECT EMPRESAS 2
+            BOX
           </Box>
 
           <Box sx={{ display: 'flex', gap: '15px', justifyContent: 'center', alignItems: 'center' }}>

@@ -9,6 +9,9 @@ export interface EventProps {
   description: string;
   package: string;
   datetime: string;
+  sender: string;
+  amount: number;
+  securityCode: string;
   createdAt?: string;
   updatedAt?: string;
 }

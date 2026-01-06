@@ -1,4 +1,4 @@
-const normalize = (texto: string) => {
+export const normalize = (texto: string) => {
   const from = 'ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç';
   const to = 'AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc';
   const mapping: any = {} as any;
@@ -16,4 +16,18 @@ const normalize = (texto: string) => {
   return ret.join('');
 };
 
-export default normalize;
+export const formatPhoneNumber = {
+  format(raw: string) {
+    const onlyNumbers = raw.replace(/\D/g, '');
+    const formatted = (onlyNumbers.match(/.{1,3}/g)?.join(' ') || '').slice(0, 11);
+    return formatted;
+  },
+  clean(raw: string) {
+    const cleaned = raw.replace(/\D/g, '').replace(/\s+/g, '');
+    return cleaned;
+  },
+  valid(raw: string) {
+    const val = this.clean(raw);
+    return val.length === 9;
+  },
+};

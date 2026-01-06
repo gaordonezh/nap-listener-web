@@ -13,7 +13,8 @@ interface WSSContextProps {
 }
 
 const socket = io('http://192.168.1.202:5001');
-const defaultRoom = 'default_room';
+// const defaultRoom = 'default_room';
+const defaultRoom = '987654321';
 
 socket.on('connect', function () {
   console.log('SOCKET CONNECTED');
@@ -33,13 +34,13 @@ const WebSocketProvider = ({ children }: PropsWithChildren) => {
   const [eventlist, setEventlist] = useState<Array<EventProps>>([]);
 
   socket.on('LAST_MESSAGE', (received: EventProps) => {
-    eventlist.push(received);
+    eventlist.unshift(received);
     setEventlist([...eventlist]);
   });
 
   socket.on('MASSIVE_MESSAGES', (received: Array<EventProps>) => {
-    eventlist.push(...received);
-    setEventlist([...eventlist]);
+    const joined = [...received, ...eventlist];
+    setEventlist([...joined]);
   });
 
   useEffect(() => {
@@ -70,6 +71,9 @@ const WebSocketProvider = ({ children }: PropsWithChildren) => {
       description: `Descripción del mensaje ${eventlist.length + 1}`,
       package: 'com.whatsapp',
       room: defaultRoom,
+      amount: 1,
+      securityCode: '123',
+      sender: 'Aldo',
     };
     socket.emit('SEND', body);
   };

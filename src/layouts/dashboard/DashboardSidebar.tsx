@@ -68,7 +68,7 @@ export default function DashboardSidebar() {
             },
           }}
         >
-          <Box sx={{ padding: '5px' }}>SELECT COMPANIES 1</Box>
+          <Box sx={{ padding: '5px' }}>BOX 1</Box>
 
           <Divider />
 
