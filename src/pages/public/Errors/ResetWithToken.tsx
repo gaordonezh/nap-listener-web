@@ -34,6 +34,8 @@ const ResetWithToken = () => {
     }
   };
 
+  console.log(loading);
+
   return (
     <Page>
       <Grid container sx={{ minHeight: 'calc((100vh) - 35px)' }} justifyContent="center" alignItems="center">

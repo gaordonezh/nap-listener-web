@@ -15,7 +15,7 @@ export default function ComponentsOverrides(theme: any) {
   return {
     ...Card(theme),
     ...Lists(theme),
-    ...Paper(theme),
+    ...Paper(),
     ...Input(theme),
     ...Button(theme),
     ...Tooltip(theme),

@@ -1,12 +1,9 @@
+import { type FormEvent, useState } from 'react';
 import { Button, Grid } from '@mui/material';
 import { notification } from 'antd';
 import InputPassword from 'components/InputPassword';
-import { useAppContext } from 'context';
-import { type FormEvent, useState } from 'react';
 
 const ConfigurationPassword = () => {
-  const { user } = useAppContext();
-
   const [actual, setActual] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -31,11 +28,11 @@ const ConfigurationPassword = () => {
     }
 
     try {
-      const dataToSend = {
-        user: user._id,
-        password: actual,
-        newPassword,
-      };
+      // const dataToSend = {
+      //   user: user._id,
+      //   password: actual,
+      //   newPassword,
+      // };
       // await changePassword(dataToSend);
       notification.success({
         message: '¡Éxito!',

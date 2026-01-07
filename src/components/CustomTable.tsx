@@ -171,7 +171,7 @@ const CustomTable = (props: TypeProps) => {
     confirm();
   };
 
-  const handleReset = async (clearFilters: Function, selectedKeys: Array<string>, setSelectedKeys: Function, confirm: Function) => {
+  const handleReset = async (clearFilters: Function, _: Array<string>, setSelectedKeys: Function, confirm: Function) => {
     setSelectedKeys(['']);
     await sleep(100);
     clearFilters();

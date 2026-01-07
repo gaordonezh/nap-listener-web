@@ -1,35 +1,14 @@
 import Page from 'components/Page';
 import { useState } from 'react';
-import { notification } from 'antd';
 import { Stack, Container, Typography, Grid, TextField, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const ForgotPwd = () => {
-  const [loading, setLoading] = useState(false);
   const [view, setView] = useState({
     form: true,
     good: false,
     bad: false,
   });
-
-  const sendData = async (items: any) => {
-    try {
-      setLoading(true);
-      // await forgotPassword(items);
-      notification.success({
-        message: `Revise su bandeja de entrada`,
-        description: 'Se le envió un correo para continuar con el proveso de reestablecimiento de contraseña.',
-      });
-      setView({ form: false, good: true, bad: false });
-    } catch (error) {
-      notification.warning({
-        message: `El número de documento ingresado no coincide con nuestro registros.`,
-      });
-      setView({ form: false, good: false, bad: true });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const newTry = () => setView({ form: true, good: false, bad: false });
 
