@@ -1,11 +1,12 @@
 import { ConfigProvider, theme } from 'antd';
+import { BrowserRouter } from 'react-router-dom';
 import AppContextProvider from 'context';
 import { useLayoutContext } from 'context/layout';
-import { BrowserRouter } from 'react-router-dom';
+import WebSocketProvider from 'context/webSocketContext';
+import GlobalInformationContextProvider from 'context/GlobalInformationProvider';
 import ConfigRoutes from 'routes';
 import ThemeConfig from 'theme';
 import GlobalStyles from 'theme/globalStyles';
-import WebSocketProvider from 'context/webSocketContext';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 
@@ -17,12 +18,14 @@ export default function App() {
     <BrowserRouter>
       <ThemeConfig mode={mode}>
         <ConfigProvider theme={{ algorithm: mode === 'light' ? theme.defaultAlgorithm : theme.darkAlgorithm }}>
-          <AppContextProvider>
+          <GlobalInformationContextProvider>
             <WebSocketProvider>
-              <GlobalStyles />
-              <ConfigRoutes />
+              <AppContextProvider>
+                <GlobalStyles />
+                <ConfigRoutes />
+              </AppContextProvider>
             </WebSocketProvider>
-          </AppContextProvider>
+          </GlobalInformationContextProvider>
         </ConfigProvider>
       </ThemeConfig>
     </BrowserRouter>

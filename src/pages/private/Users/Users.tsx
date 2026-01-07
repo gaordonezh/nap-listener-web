@@ -1,38 +1,19 @@
 import { Button, ButtonGroup } from '@mui/material';
 import CustomTable from 'components/CustomTable';
 import Page from 'components/Page';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { ModalStateProps } from 'types/global';
 import { ModalStateEnum } from 'types/global.enum';
-import { notification } from 'antd';
 import type { UserProps } from 'services/user/user';
 import UsersModal from './UsersModal';
-import { getUsersRequest } from 'services/user/user.requests';
 import type { UserRolEnum } from 'services/user/user.enum';
 import { Delete, Edit } from '@mui/icons-material';
 import ModalConfirmDelete from 'components/ConfirmDelete';
+import { useGlobalInformationContext } from 'context/GlobalInformationProvider';
 
 const Users = () => {
   const [modal, setModal] = useState<ModalStateProps<UserProps>>(null);
-  const [data, setData] = useState<Array<UserProps>>([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    getUsers();
-  }, []);
-
-  const getUsers = async () => {
-    try {
-      setLoading(true);
-      const result = await getUsersRequest();
-
-      setData([...result]);
-    } catch (error) {
-      notification.error({ title: 'No se logró obtener a los usuarios' });
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { users, handleGetUsers, loading } = useGlobalInformationContext();
 
   const columns = [
     {
@@ -74,12 +55,12 @@ const Users = () => {
 
   return (
     <Page component={<Button onClick={() => setModal({ mode: ModalStateEnum.BOX })}>AGREGAR USUARIO</Button>}>
-      <CustomTable columns={columns} data={data} loading={loading} />
+      <CustomTable columns={columns} data={users} loading={loading.users} />
 
-      {modal?.mode === ModalStateEnum.BOX ? <UsersModal onClose={() => setModal(null)} data={modal.data} onReload={getUsers} /> : null}
+      {modal?.mode === ModalStateEnum.BOX ? <UsersModal onClose={() => setModal(null)} data={modal.data} onReload={handleGetUsers} /> : null}
 
       {modal?.mode === ModalStateEnum.DELETE ? (
-        <ModalConfirmDelete endpoint={`/users/${modal.data?._id}`} handleClose={() => setModal(null)} handleRefresh={getUsers} />
+        <ModalConfirmDelete endpoint={`/users/${modal.data?._id}`} handleClose={() => setModal(null)} handleRefresh={handleGetUsers} />
       ) : null}
     </Page>
   );

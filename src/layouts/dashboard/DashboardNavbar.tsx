@@ -5,6 +5,8 @@ import { Menu } from 'assets/icons';
 import { useLayoutContext } from 'context/layout';
 import { SquareButton } from 'ui-components/Button';
 import PROJECT_CONFIG from 'config/project.config';
+import SelectClients from 'components/selects/SelectClients';
+import { useAppContext } from 'context';
 
 const CustomAppBar = styled(AppBar)(({ theme }) => ({
   height: '80px',
@@ -20,6 +22,7 @@ const CustomAppBar = styled(AppBar)(({ theme }) => ({
 
 export default function DashboardNavbar() {
   const { isOpenSideBarDesktop, setIsOpenSideBarDesktop, isOpenSideBarMobile, setIsOpenSideBarMobile, mode, toggleMode } = useLayoutContext();
+  const { selectedClient, handleSetClient } = useAppContext();
 
   const handleClick = () => {
     setIsOpenSideBarDesktop(!isOpenSideBarDesktop);
@@ -44,7 +47,12 @@ export default function DashboardNavbar() {
           </Box>
 
           <Box width={500} display={{ lg: 'block', xs: 'none' }}>
-            BOX
+            <SelectClients
+              value={selectedClient?._id}
+              onChange={(_, option: any) => handleSetClient(option?.['data-value'])}
+              placeholder="Seleccione a un cliente"
+              style={{ borderColor: selectedClient?._id ? undefined : 'red', width: '100%' }}
+            />
           </Box>
 
           <Box sx={{ display: 'flex', gap: '15px', justifyContent: 'center', alignItems: 'center' }}>

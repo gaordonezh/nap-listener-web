@@ -4,7 +4,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography }
 import SubmitButton from 'components/SubmitButton';
 import type { ClientProps } from 'services/clients/clients';
 import { createClientRequest, updateClientRequest } from 'services/clients/clients.requests';
-import { formatPhoneNumber } from 'utils/normalize';
+import { phoneNumberUtils } from 'utils/normalize';
 
 interface ClientsModalProps {
   onClose: VoidFunction;
@@ -27,7 +27,7 @@ const ClientsModal = ({ onClose, onReload, data }: ClientsModalProps) => {
   const handleCreate = async (formValues: Record<string, string>) => {
     try {
       setLoading(true);
-      const phone = formatPhoneNumber.clean(formValues.phone);
+      const phone = phoneNumberUtils.clean(formValues.phone);
 
       const body = {
         name: formValues.name,
@@ -74,7 +74,7 @@ const ClientsModal = ({ onClose, onReload, data }: ClientsModalProps) => {
                     +51
                   </Typography>
                 }
-                onChange={(event) => form.setFieldValue('phone', formatPhoneNumber.format(event.target.value))}
+                onChange={(event) => form.setFieldValue('phone', phoneNumberUtils.format(event.target.value))}
               />
             </Form.Item>
           </Form>

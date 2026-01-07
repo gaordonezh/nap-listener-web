@@ -27,7 +27,7 @@ const Profile = () => {
   };
 
   return (
-    <Page>
+    <Page title="Perfil">
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 4 }}>
           <ProfileCard actualSection={actualSection} setActualSection={setActualSection} />

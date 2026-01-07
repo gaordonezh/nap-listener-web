@@ -7,7 +7,7 @@ const MyInformation = () => {
 
   if (!user._id) return <></>;
 
-  const { f_name, l_name, n_doc, t_doc, username, address, phone } = user;
+  const { lastname, name } = user;
 
   return (
     <>
@@ -19,17 +19,17 @@ const MyInformation = () => {
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <Typography variant="h6">Nombres</Typography>
-          <Typography variant="body1">{f_name}</Typography>
+          <Typography variant="body1">{name}</Typography>
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <Typography variant="h6">Apellidos</Typography>
-          <Typography variant="body1">{l_name}</Typography>
+          <Typography variant="body1">{lastname}</Typography>
         </Grid>
-        <Grid size={{ xs: 12, md: 6 }}>
+        {/* <Grid size={{ xs: 12, md: 6 }}>
           <Typography variant="h6">Usuario</Typography>
           <Typography variant="body1">{username}</Typography>
-        </Grid>
-        <Grid size={{ xs: 12, md: 6 }}>
+        </Grid> */}
+        {/* <Grid size={{ xs: 12, md: 6 }}>
           <Typography variant="h6">{t_doc}</Typography>
           <Typography variant="body1">{n_doc}</Typography>
         </Grid>
@@ -40,7 +40,7 @@ const MyInformation = () => {
         <Grid size={{ xs: 12, md: 6 }}>
           <Typography variant="h6">Teléfono</Typography>
           <Typography variant="body1">{phone}</Typography>
-        </Grid>
+        </Grid> */}
       </Grid>
     </>
   );

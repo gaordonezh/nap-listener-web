@@ -16,14 +16,18 @@ export const normalize = (texto: string) => {
   return ret.join('');
 };
 
-export const formatPhoneNumber = {
+export const phoneNumberUtils = {
   format(raw: string) {
     const onlyNumbers = raw.replace(/\D/g, '');
     const formatted = (onlyNumbers.match(/.{1,3}/g)?.join(' ') || '').slice(0, 11);
     return formatted;
   },
-  clean(raw: string) {
-    const cleaned = raw.replace(/\D/g, '').replace(/\s+/g, '');
+  clean(raw: string, removeSpecialStr?: string) {
+    const cleaned = raw.replace(/\D/g, '').replace(/\s+/g, '').trim();
+    if (removeSpecialStr) {
+      const extra = cleaned.replace(removeSpecialStr, '');
+      return extra;
+    }
     return cleaned;
   },
   valid(raw: string) {

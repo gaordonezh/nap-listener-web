@@ -46,7 +46,6 @@ const ConfigurationPassword = () => {
       setNewPassword('');
       setConfirmPassword('');
     } catch (error: any) {
-      console.log(error);
       notification.error({
         message: '¡Error!',
         description: error.response.data.msg || 'Ha ocurrido un error al actualizar la contraseña.',

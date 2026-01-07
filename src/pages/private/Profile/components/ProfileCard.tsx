@@ -37,9 +37,9 @@ const ProfileCard = ({ actualSection, setActualSection }: IProps) => {
           padding: '20px',
         }}
       >
-        <Avatar sx={{ width: 200, height: 200 }} src={user.profile_picture}></Avatar>
+        <Avatar sx={{ width: 200, height: 200 }} alt={user.name}></Avatar>
         <Typography variant="h4" sx={{ color: 'grey.600' }}>
-          {user.f_name + ' ' + user.l_name}
+          {user.name}
         </Typography>
         <Stack direction="row" spacing={1}>
           {user.roles.map((role) => (

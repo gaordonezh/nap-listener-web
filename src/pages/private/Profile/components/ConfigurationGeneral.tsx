@@ -6,37 +6,24 @@ import { type FormEvent, useEffect, useState } from 'react';
 const ConfigurationGeneral = () => {
   const { user, setUser } = useAppContext();
 
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
+  const [fields, setFields] = useState({ name: '', lastname: '' });
 
   useEffect(() => {
     if (user._id) {
-      const { email, phone, address } = user;
-      setEmail(email);
-      setPhone(phone?.toString() ?? '');
-      setAddress(address ?? '');
+      const { name, lastname } = user;
+      setFields({ lastname, name });
     }
   }, [user]);
 
   const handleSave = async (e: FormEvent) => {
     e.preventDefault();
-
     try {
-      const dataToSend = {
-        email,
-        phone,
-        address,
-      };
-      // const res = await updateUserInfo(dataToSend, user._id);
-      // setUser(res);
+      setUser({ ...user, ...fields });
       notification.success({
         message: '¡Éxito!',
         description: 'Se ha actualizado la información correctamente.',
       });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (
@@ -44,9 +31,9 @@ const ConfigurationGeneral = () => {
       <Grid container spacing={2}>
         <Grid size={12}>
           <TextField
-            label="Correo"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            label="Nombres"
+            value={fields.name}
+            onChange={(e) => setFields({ ...fields, name: e.target.value })}
             variant="standard"
             fullWidth
             placeholder="prueba@prueba.com"
@@ -54,23 +41,12 @@ const ConfigurationGeneral = () => {
         </Grid>
         <Grid size={12}>
           <TextField
-            label="Teléfono"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            label="Apellidos"
+            value={fields.lastname}
+            onChange={(e) => setFields({ ...fields, lastname: e.target.value })}
             variant="standard"
             fullWidth
-            type="number"
-            placeholder="999 999 999"
-          />
-        </Grid>
-        <Grid size={12}>
-          <TextField
-            label="Dirección"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            variant="standard"
-            fullWidth
-            placeholder="Jr Callao N° 365"
+            placeholder="prueba@prueba.com"
           />
         </Grid>
         <Grid size={12} sx={{ display: 'flex', justifyContent: 'flex-end' }} mt={2}>

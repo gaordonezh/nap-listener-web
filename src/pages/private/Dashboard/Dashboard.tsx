@@ -1,25 +1,35 @@
-import { Box, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Stack, Tooltip, Typography } from '@mui/material';
+import { Alert } from 'antd';
 import CustomTable from 'components/CustomTable';
 import Page from 'components/Page';
+import { useAppContext } from 'context';
+import { useGlobalInformationContext } from 'context/GlobalInformationProvider';
 import { useSocketContext } from 'context/webSocketContext';
 import dayjs from 'dayjs';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import type { EventProps } from 'services/events/events';
-import { formatPhoneNumber } from 'utils/normalize';
+import { phoneNumberUtils } from 'utils/normalize';
 
-export default function Dashboard() {
-  const { eventlist, loading } = useSocketContext();
+const Dashboard = () => {
+  const { events, loading, handleGetEvents } = useGlobalInformationContext();
+  const { selectedClient } = useAppContext();
+  const { handleSendMessage } = useSocketContext();
+
+  useEffect(() => {
+    if (!selectedClient) return;
+    handleGetEvents(phoneNumberUtils.clean(selectedClient.phone, '51'));
+  }, [selectedClient]);
 
   const formattedData = useMemo(
     () =>
-      eventlist.map((item) => ({
+      events.map((item) => ({
         ...item,
-        room: `+51 ${formatPhoneNumber.format(item.room)}`,
+        room: `+51 ${phoneNumberUtils.format(item.room)}`,
         amount: `S/ ${parseFloat(String(item.amount)).toFixed(2)}`,
         date: dayjs(item.datetime).format('dddd DD MMMM YYYY'),
         time: dayjs(item.datetime).format('HH:mm a'),
       })),
-    [eventlist]
+    [events]
   );
 
   const columns = [
@@ -94,8 +104,34 @@ export default function Dashboard() {
   ];
 
   return (
-    <Page>
-      <CustomTable columns={columns} data={formattedData} loading={loading} />
+    <Page
+      component={
+        selectedClient ? (
+          <Button
+            size="large"
+            variant="contained"
+            color="primary"
+            onClick={() => handleSendMessage(phoneNumberUtils.clean(selectedClient.phone, '51'))}
+          >
+            SEND TEST MESSAGE
+          </Button>
+        ) : undefined
+      }
+    >
+      <Stack direction="column" spacing={2}>
+        {selectedClient ? null : (
+          <Alert
+            showIcon
+            type="warning"
+            title="Cliente no seleccionado"
+            description="Seleccione a un cliente para ver sus notificaciones en tiempo real."
+          />
+        )}
+
+        <CustomTable columns={columns} data={formattedData} loading={loading.events} />
+      </Stack>
     </Page>
   );
-}
+};
+
+export default Dashboard;

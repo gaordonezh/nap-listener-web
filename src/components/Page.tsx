@@ -18,6 +18,7 @@ const types: IDirection[] = ['down', 'left', 'right', 'up'];
 
 interface IProps {
   component?: ReactElement;
+  title?: string;
 }
 
 const CustomScrollBar = styled('div')(({ theme }) => ({
@@ -54,7 +55,7 @@ const CustomScrollBar = styled('div')(({ theme }) => ({
  * @param title - Título de la página (Opcional)
  * @return ReactElement
  */
-const Page = ({ children, component }: PropsWithChildren<IProps>): ReactElement => {
+const Page = ({ children, component, title }: PropsWithChildren<IProps>): ReactElement => {
   const location = useLocation();
 
   const { Icon, group, module } = sidebarConfig.reduce(
@@ -107,7 +108,7 @@ const Page = ({ children, component }: PropsWithChildren<IProps>): ReactElement 
                 pb: 0.5,
               }}
             >
-              {module || 'Modulo no definido'}
+              {module || title || 'Modulo no definido'}
             </Typography>
           </Grid>
           {component && <Grid>{component}</Grid>}

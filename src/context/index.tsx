@@ -2,14 +2,21 @@ import BackDrop from 'components/BackDrop';
 import PROJECT_CONFIG from 'config/project.config';
 import { createContext, useContext, useState, useEffect, type PropsWithChildren, type Dispatch, type SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
+import type { ClientProps } from 'services/clients/clients';
 import StorageService from 'services/storageService';
 import type { UserProps } from 'services/user/user';
+import { UserRolEnum } from 'services/user/user.enum';
 import { validateUser } from 'services/user/user.requests';
+import { useSocketContext } from './webSocketContext';
+import { phoneNumberUtils } from 'utils/normalize';
 
-export interface ContextProps {
+interface ContextProps {
   loading: boolean;
   user: UserProps;
+  isSuperAdmin: boolean;
   setUser: Dispatch<SetStateAction<UserProps>>;
+  selectedClient: null | ClientProps;
+  handleSetClient: (client: ClientProps) => void;
 }
 
 const AppContext = createContext({} as ContextProps);
@@ -18,9 +25,11 @@ export const useAppContext = () => useContext(AppContext);
 
 const AppContextProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
+  const { handleJoin } = useSocketContext();
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({} as UserProps);
+  const [selectedClient, setSelectedClient] = useState<null | ClientProps>(null);
 
   useEffect(() => {
     const exists = StorageService.get(PROJECT_CONFIG.LOCAL_AUTH);
@@ -31,6 +40,13 @@ const AppContextProvider = ({ children }: PropsWithChildren) => {
 
     handleValidate();
   }, []);
+
+  const handleSetClient = (client: ClientProps) => {
+    const newPhone = phoneNumberUtils.clean(client.phone, '51');
+    const oldPhone = selectedClient ? phoneNumberUtils.clean(selectedClient.phone, '51') : undefined;
+    handleJoin(newPhone, oldPhone);
+    setSelectedClient(client);
+  };
 
   const handleValidate = async () => {
     try {
@@ -46,7 +62,20 @@ const AppContextProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  return <AppContext.Provider value={{ loading, user, setUser }}>{loading ? <BackDrop loading={loading} /> : children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider
+      value={{
+        loading,
+        user,
+        setUser,
+        isSuperAdmin: user.roles?.includes(UserRolEnum.SUPERADMIN),
+        selectedClient,
+        handleSetClient,
+      }}
+    >
+      {loading ? <BackDrop loading={loading} /> : children}
+    </AppContext.Provider>
+  );
 };
 
 export default AppContextProvider;

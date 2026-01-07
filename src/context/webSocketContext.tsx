@@ -1,27 +1,19 @@
-import { Button } from '@mui/material';
-import { notification } from 'antd';
-import PROJECT_CONFIG from 'config/project.config';
 import dayjs from 'dayjs';
-import { createContext, useContext, useEffect, useState, type PropsWithChildren } from 'react';
+import { createContext, useContext, type PropsWithChildren } from 'react';
 import type { CreateEventBodyProps, EventProps } from 'services/events/events';
-import { getEventsRequest } from 'services/events/events.requests';
-import StorageService from 'services/storageService';
 import { io } from 'socket.io-client';
+import { useGlobalInformationContext } from './GlobalInformationProvider';
+import { apiBaseUrl } from 'services/api-client';
 
 interface WSSContextProps {
-  handleSendMessage: VoidFunction;
-  loading: boolean;
-  eventlist: Array<EventProps>;
+  handleSendMessage: (room: string) => void;
+  handleJoin: (room: string, leave?: string) => void;
 }
 
-const currentSession = StorageService.get(PROJECT_CONFIG.LOCAL_AUTH);
-
-const socket = io('http://192.168.1.202:5001');
-const defaultRoom = '987654321';
+const socket = io(apiBaseUrl);
 
 socket.on('connect', function () {
   console.log('SOCKET CONNECTED');
-  socket.emit('JOIN', defaultRoom);
 });
 
 socket.on('disconnect', function () {
@@ -33,55 +25,37 @@ const WebSocket = createContext({} as WSSContextProps);
 export const useSocketContext = () => useContext(WebSocket);
 
 const WebSocketProvider = ({ children }: PropsWithChildren) => {
-  const [loading, setLoading] = useState(false);
-  const [eventlist, setEventlist] = useState<Array<EventProps>>([]);
+  const { handleSetEvents } = useGlobalInformationContext();
 
   socket.on('LAST_MESSAGE', (received: EventProps) => {
-    eventlist.unshift(received);
-    setEventlist([...eventlist]);
+    handleSetEvents([received]);
   });
 
   socket.on('MASSIVE_MESSAGES', (received: Array<EventProps>) => {
-    const joined = [...received, ...eventlist];
-    setEventlist([...joined]);
+    handleSetEvents(received);
   });
 
-  useEffect(() => {
-    if (!currentSession) return;
-    handleGetEvents();
-  }, []);
-
-  const handleGetEvents = async () => {
-    try {
-      setLoading(true);
-
-      const res = await getEventsRequest({ room: defaultRoom });
-      setEventlist([...res]);
-    } catch (error) {
-      notification.error({
-        title: 'No se pudo obtener el listado de notificaciones',
-        description: 'Vuelva a carga la página o vuelva mas tarde',
-        actions: [<Button onClick={() => window.location.reload()}>Volver a cargar</Button>],
-      });
-    } finally {
-      setLoading(false);
-    }
+  const handleJoin = (room: string, leave?: string) => {
+    socket.emit('JOIN', { room, leave });
+    if (leave) console.log('LEAVING FROM', room);
+    console.log('JOININ TO', room);
   };
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = (room: string) => {
     const body: CreateEventBodyProps = {
       datetime: dayjs().toISOString(),
-      title: `Título ${eventlist.length + 1}`,
-      description: `Descripción del mensaje ${eventlist.length + 1}`,
+      title: 'Confirmación de Pago',
+      description: 'CORPORACIÓN NETAPPPERU SAC te envió un pago por S/ 1. El cód. de seguridad es: 160', // YAPE to YAPE
+      // description: 'Yape! CORPORACIÓN NETAPPPERU SAC te envió un pago por S/ 1', // PLIN to YAPE
       package: 'com.whatsapp',
-      room: defaultRoom,
-      amount: 1,
+      room,
+      amount: 123,
       securityCode: '123',
-      sender: 'Aldo',
+      sender: 'Nombre el que envía',
     };
     socket.emit('SEND', body);
   };
 
-  return <WebSocket.Provider value={{ handleSendMessage, loading, eventlist }}>{children}</WebSocket.Provider>;
+  return <WebSocket.Provider value={{ handleSendMessage, handleJoin }}>{children}</WebSocket.Provider>;
 };
 export default WebSocketProvider;

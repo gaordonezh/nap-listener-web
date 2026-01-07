@@ -4,10 +4,11 @@ import NavSection from './NavSection';
 import sidebarConfig from './SidebarConfig';
 import { useAppContext } from 'context';
 import { useLayoutContext } from 'context/layout';
+import SelectClients from 'components/selects/SelectClients';
 
 export default function DashboardSidebar() {
   const { isOpenSideBarDesktop, isOpenSideBarMobile, setIsOpenSideBarMobile, drawerWidth } = useLayoutContext();
-  const { user } = useAppContext();
+  const { selectedClient, handleSetClient, user } = useAppContext();
 
   const [newItems, setNewItems] = useState<typeof sidebarConfig>([]);
 
@@ -68,7 +69,14 @@ export default function DashboardSidebar() {
             },
           }}
         >
-          <Box sx={{ padding: '5px' }}>BOX 1</Box>
+          <Box p={2}>
+            <SelectClients
+              value={selectedClient?._id}
+              onChange={(_, option: any) => handleSetClient(option?.['data-value'])}
+              placeholder="Seleccione a un cliente"
+              style={{ borderColor: selectedClient?._id ? undefined : 'red', width: '100%' }}
+            />
+          </Box>
 
           <Divider />
 

@@ -1,42 +1,17 @@
 import { Button, ButtonGroup } from '@mui/material';
 import CustomTable from 'components/CustomTable';
 import Page from 'components/Page';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { ClientProps } from 'services/clients/clients';
 import type { ModalStateProps } from 'types/global';
 import { ModalStateEnum } from 'types/global.enum';
 import ClientsModal from './ClientsModal';
-import { notification } from 'antd';
-import { getClientsRequest } from 'services/clients/clients.requests';
-import { formatPhoneNumber } from 'utils/normalize';
 import { Edit } from '@mui/icons-material';
+import { useGlobalInformationContext } from 'context/GlobalInformationProvider';
 
 const Clients = () => {
   const [modal, setModal] = useState<ModalStateProps<ClientProps>>(null);
-  const [data, setData] = useState<Array<ClientProps>>([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    getClients();
-  }, []);
-
-  const getClients = async () => {
-    try {
-      setLoading(true);
-      const result = await getClientsRequest();
-
-      const formattedPhone = result.map((item) => ({
-        ...item,
-        phone: `+51 ${formatPhoneNumber.format(item.phone)}`,
-      }));
-
-      setData([...formattedPhone]);
-    } catch (error) {
-      notification.error({ title: 'No se logró obtener a los clientes' });
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { clients, loading, handleGetClients } = useGlobalInformationContext();
 
   const columns = [
     {
@@ -69,9 +44,9 @@ const Clients = () => {
 
   return (
     <Page component={<Button onClick={() => setModal({ mode: ModalStateEnum.BOX })}>AGREGAR CLIENTE</Button>}>
-      <CustomTable columns={columns} data={data} loading={loading} />
+      <CustomTable columns={columns} data={clients} loading={loading.clients} />
 
-      {modal?.mode === ModalStateEnum.BOX ? <ClientsModal onClose={() => setModal(null)} data={modal.data} onReload={getClients} /> : null}
+      {modal?.mode === ModalStateEnum.BOX ? <ClientsModal onClose={() => setModal(null)} data={modal.data} onReload={handleGetClients} /> : null}
     </Page>
   );
 };
