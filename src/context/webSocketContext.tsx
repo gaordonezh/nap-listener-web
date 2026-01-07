@@ -1,9 +1,11 @@
 import { Button } from '@mui/material';
 import { notification } from 'antd';
+import PROJECT_CONFIG from 'config/project.config';
 import dayjs from 'dayjs';
 import { createContext, useContext, useEffect, useState, type PropsWithChildren } from 'react';
 import type { CreateEventBodyProps, EventProps } from 'services/events/events';
 import { getEventsRequest } from 'services/events/events.requests';
+import StorageService from 'services/storageService';
 import { io } from 'socket.io-client';
 
 interface WSSContextProps {
@@ -12,8 +14,9 @@ interface WSSContextProps {
   eventlist: Array<EventProps>;
 }
 
+const currentSession = StorageService.get(PROJECT_CONFIG.LOCAL_AUTH);
+
 const socket = io('http://192.168.1.202:5001');
-// const defaultRoom = 'default_room';
 const defaultRoom = '987654321';
 
 socket.on('connect', function () {
@@ -44,6 +47,7 @@ const WebSocketProvider = ({ children }: PropsWithChildren) => {
   });
 
   useEffect(() => {
+    if (!currentSession) return;
     handleGetEvents();
   }, []);
 

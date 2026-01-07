@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, Input, notification, Spin } from 'antd';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 import SubmitButton from 'components/SubmitButton';
 import type { ClientProps } from 'services/clients/clients';
-import { createClientRequest } from 'services/clients/clients.requests';
+import { createClientRequest, updateClientRequest } from 'services/clients/clients.requests';
 import { formatPhoneNumber } from 'utils/normalize';
 
 interface ClientsModalProps {
@@ -16,6 +16,14 @@ const ClientsModal = ({ onClose, onReload, data }: ClientsModalProps) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (!data) return;
+    form.setFieldsValue({
+      name: data.name,
+      phone: data.phone.slice(4, data.phone.length),
+    });
+  }, [data]);
+
   const handleCreate = async (formValues: Record<string, string>) => {
     try {
       setLoading(true);
@@ -26,7 +34,8 @@ const ClientsModal = ({ onClose, onReload, data }: ClientsModalProps) => {
         phone,
       };
 
-      await createClientRequest(body);
+      if (data) await updateClientRequest(data._id, body);
+      else await createClientRequest(body);
 
       onReload();
       onClose();

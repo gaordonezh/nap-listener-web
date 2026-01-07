@@ -24,19 +24,22 @@ const AppContextProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     const exists = StorageService.get(PROJECT_CONFIG.LOCAL_AUTH);
-    if (exists) {
-      getData();
-    } else {
+    if (!exists) {
       setLoading(false);
+      return;
     }
+
+    handleValidate();
   }, []);
 
-  const getData = async () => {
+  const handleValidate = async () => {
     try {
       setLoading(true);
+
       const res = await validateUser();
       setUser(res);
     } catch (error) {
+      StorageService.delete(PROJECT_CONFIG.LOCAL_AUTH);
       navigate('/login');
     } finally {
       setLoading(false);

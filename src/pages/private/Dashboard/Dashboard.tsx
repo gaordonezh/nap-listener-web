@@ -1,4 +1,4 @@
-import { Box, Button, Tooltip, Typography } from '@mui/material';
+import { Box, Tooltip, Typography } from '@mui/material';
 import CustomTable from 'components/CustomTable';
 import Page from 'components/Page';
 import { useSocketContext } from 'context/webSocketContext';
@@ -8,7 +8,7 @@ import type { EventProps } from 'services/events/events';
 import { formatPhoneNumber } from 'utils/normalize';
 
 export default function Dashboard() {
-  const { handleSendMessage, eventlist, loading } = useSocketContext();
+  const { eventlist, loading } = useSocketContext();
 
   const formattedData = useMemo(
     () =>
@@ -53,14 +53,6 @@ export default function Dashboard() {
       },
     },
     {
-      title: 'Teléfono',
-      dataIndex: 'room',
-      key: 'room',
-      sorter: true,
-      filter: true,
-      minWidth: 150,
-    },
-    {
       title: 'Remitente',
       dataIndex: 'sender',
       key: 'sender',
@@ -102,7 +94,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <Page component={<Button onClick={handleSendMessage}>SEND TEST MESSAGE</Button>}>
+    <Page>
       <CustomTable columns={columns} data={formattedData} loading={loading} />
     </Page>
   );

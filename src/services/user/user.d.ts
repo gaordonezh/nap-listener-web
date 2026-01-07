@@ -5,23 +5,15 @@ export interface AuthUserProps {
   password: string;
 }
 
+export interface UserQueryProps {
+  user: string;
+}
+
 export interface UserProps {
   _id: string;
-  // box: string;
-  f_name: string;
-  l_name: string;
-  email: string;
-  // password: string;
+  name: string;
+  lastname: string;
   roles: Array<UserRolEnum>;
-  address?: string;
-  phone?: number;
   username?: string;
-  t_doc?: string;
-  n_doc?: string;
-  profile_picture?: string;
-  // campus: any;
-  // occupation?: string;
-  // dateBorn?: string;
-  // direccion?: string;
-  // fullname?: string;
+  password?: string;
 }

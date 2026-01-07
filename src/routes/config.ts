@@ -14,6 +14,7 @@ const DashboardLayout = Loadable(lazy(() => import('layouts/dashboard')));
 const Dashboard = Loadable(lazy(() => import('pages/private/Dashboard')));
 const Profile = Loadable(lazy(() => import('pages/private/Profile')));
 const Clients = Loadable(lazy(() => import('pages/private/Clients')));
+const Users = Loadable(lazy(() => import('pages/private/Users')));
 
 const routes = [
   {
@@ -36,7 +37,12 @@ const routes = [
       {
         path: 'clients',
         element: Clients,
-        roles: Object.values(UserRolEnum),
+        roles: [UserRolEnum.SUPERADMIN],
+      },
+      {
+        path: 'users',
+        element: Users,
+        roles: [UserRolEnum.SUPERADMIN],
       },
       {
         path: 'profile',

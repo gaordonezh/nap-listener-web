@@ -1,14 +1,11 @@
 import { useState } from 'react';
 import { notification, Spin } from 'antd';
-import axios from 'axios';
-import { API } from 'config/api.config';
 import { Typography, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
-import UserService from 'services/UserService';
+import { apiServerClient } from 'services/api-client';
 
 interface ConfirmDeleteProps {
-  open: boolean;
-  setOpen: Function;
-  handleRefresh: Function;
+  handleClose: VoidFunction;
+  handleRefresh: VoidFunction;
   endpoint: string;
   title?: string;
   description?: string;
@@ -16,8 +13,7 @@ interface ConfirmDeleteProps {
 
 const ModalConfirmDelete = (props: ConfirmDeleteProps) => {
   const {
-    open,
-    setOpen,
+    handleClose,
     handleRefresh,
     endpoint,
     title = 'Eliminar Registro',
@@ -26,17 +22,17 @@ const ModalConfirmDelete = (props: ConfirmDeleteProps) => {
   const [loading, setLoading] = useState(false);
 
   const deleteRegister = async () => {
-    setLoading(true);
     try {
-      await axios.delete(`${API}/${endpoint}`, {
-        headers: { Authorization: UserService.token() },
-      });
+      setLoading(true);
+
+      await apiServerClient.delete(endpoint);
+
       notification.success({
         message: 'Bien!',
         description: 'El registro se eliminó correctamente.',
       });
       handleRefresh();
-      setOpen(false);
+      handleClose();
     } catch (error) {
       notification.error({
         message: 'Oops!',
@@ -48,7 +44,7 @@ const ModalConfirmDelete = (props: ConfirmDeleteProps) => {
   };
 
   return (
-    <Dialog open={open} onClose={() => setOpen(false)} fullWidth>
+    <Dialog open onClose={handleClose} fullWidth maxWidth="xs">
       <DialogTitle>
         <Typography variant="h4" color="textPrimary" align="center" component="p" style={{ fontSize: '1.3rem', fontWeight: 600 }}>
           {title}
@@ -62,10 +58,10 @@ const ModalConfirmDelete = (props: ConfirmDeleteProps) => {
         </Spin>
       </DialogContent>
       <DialogActions>
-        <Button disabled={loading} onClick={() => setOpen(false)} variant="outlined">
+        <Button disabled={loading} onClick={handleClose} variant="outlined">
           CANCELAR
         </Button>
-        <Button disabled={loading} onClick={deleteRegister} color="error" variant="contained">
+        <Button loading={loading} onClick={deleteRegister} color="error" variant="contained">
           CONFIRMAR
         </Button>
       </DialogActions>

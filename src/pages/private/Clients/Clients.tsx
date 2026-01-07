@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, ButtonGroup } from '@mui/material';
 import CustomTable from 'components/CustomTable';
 import Page from 'components/Page';
 import { useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ import ClientsModal from './ClientsModal';
 import { notification } from 'antd';
 import { getClientsRequest } from 'services/clients/clients.requests';
 import { formatPhoneNumber } from 'utils/normalize';
+import { Edit } from '@mui/icons-material';
 
 const Clients = () => {
   const [modal, setModal] = useState<ModalStateProps<ClientProps>>(null);
@@ -51,6 +52,18 @@ const Clients = () => {
       key: 'phone',
       sorter: true,
       filter: true,
+    },
+    {
+      title: 'Acciones',
+      dataIndex: '_id',
+      key: '_id',
+      render: (_: string, record: ClientProps) => (
+        <ButtonGroup variant="contained">
+          <Button color="primary" endIcon={<Edit />} onClick={() => setModal({ mode: ModalStateEnum.BOX, data: record })}>
+            Editar
+          </Button>
+        </ButtonGroup>
+      ),
     },
   ];
 

@@ -45,9 +45,8 @@ export default function Login() {
 
       const res = await authUser(values);
 
-      StorageService.set(PROJECT_CONFIG.LOCAL_AUTH, res._id);
-
-      setUser(res);
+      StorageService.set(PROJECT_CONFIG.LOCAL_AUTH, res.token);
+      setUser(res.user);
 
       window.location.href = '/dashboard';
     } catch (error: any) {
@@ -73,7 +72,7 @@ export default function Login() {
           </Box>
 
           <Spin spinning={isLoading}>
-            <Form form={form} onFinish={onSubmit} initialValues={{ username: 'a', password: 'b' }}>
+            <Form form={form} onFinish={onSubmit} initialValues={{ username: 'netappperusac@gmail.com', password: 'Nap2025+' }}>
               <Form.Item name="username" rules={[{ required: true, message: 'El usuario es requerido' }]}>
                 <TextField fullWidth label="Usuario" />
               </Form.Item>

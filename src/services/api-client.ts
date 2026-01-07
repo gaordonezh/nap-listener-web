@@ -10,20 +10,9 @@ const apiServerClient = axios.create({
 });
 
 const interceptor = (config: InternalAxiosRequestConfig<any>) => {
-  const cookie = StorageService.get(PROJECT_CONFIG.LOCAL_AUTH);
-  console.log({ cookie });
-
-  //   if (config.method === 'get') {
-  //     if (typeof config.params !== 'object') config.params = {};
-
-  //     if (config.params.company === 'omit') config.params.company = undefined;
-  //     else config.params.company ??= company;
-
-  //     if (config.params.headquarter === 'omit') config.params.headquarter = undefined;
-  //     else config.params.headquarter ??= headquarter;
-  //   }
-
-  // config.headers.Authorization = token && `Bearer ${token}`;
+  const token = StorageService.get(PROJECT_CONFIG.LOCAL_AUTH);
+  console.log(token);
+  config.headers.Authorization = token && `Bearer ${token}`;
   return config;
 };
 

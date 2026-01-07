@@ -36,7 +36,6 @@ const CustomToolTip = styled(({ className, ...props }: TooltipProps) => <Tooltip
 
 const NavBarUser = ({ width = 50, height = 50 }: { width?: number; height?: number }) => {
   const { user } = useAppContext();
-  const name = user?.f_name ? user?.f_name[0] : 'X';
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -60,7 +59,7 @@ const NavBarUser = ({ width = 50, height = 50 }: { width?: number; height?: numb
           }}
         >
           <Avatar
-            src={user?.profile_picture}
+            src="https://cdn.vectorstock.com/i/1000v/51/87/student-avatar-user-profile-icon-vector-47025187.jpg"
             onClick={handleOpen}
             sx={{
               transition: 'all 0.3s ease-in-out',
@@ -69,7 +68,7 @@ const NavBarUser = ({ width = 50, height = 50 }: { width?: number; height?: numb
               '&:hover': { cursor: 'pointer', transform: 'scale(1.05)' },
             }}
           >
-            {name}
+            {user.name}
           </Avatar>
         </CustomToolTip>
       </div>
@@ -107,14 +106,14 @@ const ToolTipContent = ({ handleOpenAway }: { handleOpenAway: Function }) => {
   return (
     <Box sx={{ padding: '10px 0' }}>
       <Box sx={{ padding: '0 20px', paddingBottom: '10px' }}>
-        <Typography variant="subtitle1">{user?.f_name + ' ' + user.l_name}</Typography>
+        <Typography variant="subtitle1">{user.name}</Typography>
         <Typography component="div" variant="caption">
-          {user?.roles?.[0].toUpperCase()}
+          {user?.roles.join(' ')}
         </Typography>
       </Box>
       <Divider />
       <Box sx={{ padding: '5px 15px' }}>
-        {TOOLTIP_OPTIONS.map(({ title, icon, action }, index) => (
+        {TOOLTIP_OPTIONS.map(({ title, icon, action }) => (
           <MenuItem
             sx={{
               display: 'flex',
