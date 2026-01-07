@@ -1,10 +1,9 @@
-import { Box, Button, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Stack, Tooltip, Typography } from '@mui/material';
 import { Alert } from 'antd';
 import CustomTable from 'components/CustomTable';
 import Page from 'components/Page';
 import { useAppContext } from 'context';
 import { useGlobalInformationContext } from 'context/GlobalInformationProvider';
-import { useSocketContext } from 'context/webSocketContext';
 import dayjs from 'dayjs';
 import { useEffect, useMemo } from 'react';
 import type { EventProps } from 'services/events/events';
@@ -13,7 +12,6 @@ import { phoneNumberUtils } from 'utils/normalize';
 const Dashboard = () => {
   const { events, loading, handleGetEvents } = useGlobalInformationContext();
   const { selectedClient } = useAppContext();
-  const { handleSendMessage } = useSocketContext();
 
   useEffect(() => {
     if (!selectedClient) return;
@@ -105,18 +103,18 @@ const Dashboard = () => {
 
   return (
     <Page
-      component={
-        selectedClient ? (
-          <Button
-            size="large"
-            variant="contained"
-            color="primary"
-            onClick={() => handleSendMessage(phoneNumberUtils.clean(selectedClient.phone, '51'))}
-          >
-            SEND TEST MESSAGE
-          </Button>
-        ) : undefined
-      }
+    // component={
+    //   selectedClient ? (
+    //     <Button
+    //       size="large"
+    //       variant="contained"
+    //       color="primary"
+    //       onClick={() => handleSendMessage(phoneNumberUtils.clean(selectedClient.phone, '51'))}
+    //     >
+    //       SEND TEST MESSAGE
+    //     </Button>
+    //   ) : undefined
+    // }
     >
       <Stack direction="column" spacing={2}>
         {selectedClient ? null : (
