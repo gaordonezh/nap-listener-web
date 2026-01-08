@@ -66,8 +66,6 @@ const GlobalInformationContextProvider = ({ children }: PropsWithChildren) => {
       }));
 
       setClients([...formattedPhone]);
-    } catch (err) {
-      notification.error({ title: 'No se logró obtener a los clientes', description: String(err) });
     } finally {
       handleLoading('clients', false);
     }
@@ -94,8 +92,6 @@ const GlobalInformationContextProvider = ({ children }: PropsWithChildren) => {
       handleLoading('users', true);
       const res = await getUsersRequest();
       setUsers([...res]);
-    } catch (err) {
-      notification.error({ title: 'No se logró obtener a los usuarios', description: String(err) });
     } finally {
       handleLoading('users', false);
     }
