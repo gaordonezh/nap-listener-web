@@ -25,7 +25,7 @@ const Dashboard = () => {
         room: `+51 ${phoneNumberUtils.format(item.room)}`,
         amount: `S/ ${parseFloat(String(item.amount)).toFixed(2)}`,
         date: dayjs(item.datetime).format('dddd DD MMMM YYYY'),
-        time: dayjs(item.datetime).format('HH:mm a'),
+        time: dayjs(item.datetime).format('HH:mm:ss a'),
       })),
     [events]
   );
