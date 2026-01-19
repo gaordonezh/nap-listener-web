@@ -51,7 +51,7 @@ const GlobalInformationContextProvider = ({ children }: PropsWithChildren) => {
   };
 
   const handleSetEvents = (data: Array<EventProps>) => {
-    events.push(...data);
+    events.unshift(...data);
     setEvents([...events]);
   };
 
